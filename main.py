@@ -11,7 +11,11 @@ def main():
     return 'srver works!'
 
 
-players = ['Вася', 'петя', 'гриша']
+
+
+from User import User
+players = [str(User('Ваня', 'Пупкин')) , str(User('Петя', 'Тряпкин'))]
+
 
 @app.route('/users')
 def playesr():
