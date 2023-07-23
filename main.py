@@ -8,18 +8,29 @@ def haha():
 
 @app.route('/')
 def main():
-    return 'srver works!'
-
-
-
+    return 'server works!'
 
 from User import User
-players = [str(User('Ваня', 'Пупкин')) , str(User('Петя', 'Тряпкин'))]
+players = [ User('Вася', 'Пупкин', 1), User('Петя', 'Тряпкин', 2), User('Даша', 'Корейка', 3) ]
+
+def user_list_to_str_list(new_players):
+    str_players = []
+
+    for user in new_players:
+        str_players.append(str(user))
+    return str_players
+
+id_players = []
+
+for user in players:
+    id_players.append(user.id)
+
 
 
 @app.route('/users')
 def playesr():
-    return str(players)
+    return {'id': id_players, 'users': user_list_to_str_list(players)}
+
 
 if __name__ == '__main__':
     # app.run(port=3000, debug=True)
