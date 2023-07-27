@@ -1,4 +1,7 @@
 from flask import Flask
+from listToJSON import listToJSON
+from User import User
+from Game import Game
 
 app = Flask(__name__)
 
@@ -10,26 +13,35 @@ def haha():
 def main():
     return 'server works!'
 
-from User import User
-players = [ User('Вася', 'Пупкин', 1), User('Петя', 'Тряпкин', 2), User('Даша', 'Корейка', 3) ]
 
-def user_list_to_str_list(new_players):
-    str_players = []
+players = [ User('Вася', 'Пупкин', 1), User('Петя', 'Тряпкин', 2), User('Даша', 'Корйека', 3) ]
 
-    for user in new_players:
-        str_players.append(str(user))
-    return str_players
+games = [
+    Game(1, 'haha'),
+    Game(2, 'hehe')
+]
 
-id_players = []
+games[0].connect(players[0])
+games[0].connect(players[1])
 
-for user in players:
-    id_players.append(user.id)
-
-
+games[1].connect(players[2])
+games[1].connect(players[0])
 
 @app.route('/users')
 def playesr():
-    return {'id': id_players, 'users': user_list_to_str_list(players)}
+    buffer = listToJSON(players)
+    return {
+        'users': buffer,
+        'count': len(buffer)
+    }
+
+@app.route('/games')
+def games_lsdlfkjsldkfsldkfj():
+    buffer = listToJSON(games)
+    return {
+        'games': buffer,
+        'count': len(buffer)
+    }
 
 
 if __name__ == '__main__':
