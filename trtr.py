@@ -1,3 +1,8 @@
-a = '1,2,3'
+buffer_users = '1,2'
+moi_id = buffer_users.split(',')
+ret = []
 
-print(a.split(','))
+for str_id in moi_id:
+    ret.append(int(str_id))
+
+1+1
