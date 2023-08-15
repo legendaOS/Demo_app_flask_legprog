@@ -7,10 +7,6 @@ from Game import Game
 
 app = Flask(__name__)
 
-@app.route('/how-are-you')
-def haha():
-    return 'iam fine!'
-
 @app.route('/')
 def main():
     return 'server works!'
@@ -29,61 +25,64 @@ games[0].connect(players[1])
 games[1].connect(players[2])
 games[1].connect(players[0])
 
-@app.route('/users')
-def playesr():
-    buffer = listToJSON(players)
-    return {
-        'users': buffer,
-        'count': len(buffer)
-    }
 
-@app.route('/games')
-def games_lsdlfkjsldkfsldkfj():
-    buffer = listToJSON(games)
-    return {
-        'games': buffer,
-        'count': len(buffer)
-    }
 
 cats_names = ['Вася', 'Мурзик', 'Жирунчик', 'Вапек']
-cats_info = {
-    'Вася': 'дворняга', 
-    'Мурзик': 'домашний', 
-    'Жирунчик': 'сфинкс', 
-    'Вапек': 'британский'
-}
 
-@app.route('/cats')
+
+@app.route('/cats', methods = ['GET'])
 def cats():
-    return cats_names
+    return {
+        'count': len(cats_names),
+        'cats': cats_names
+    }
 
-@app.route('/cat/<number>')
-def cat(number):
-    number = int(number)
-    if number < 0 or number > len(cats_names):
-        return 'неверный индекс!'
-    else:
-        return cats_names[number]
+@app.route('/cat/<id>', methods = ['GET', 'PUT', 'DELETE'])
+def cat_id(id):
+    id = int(id)
 
-@app.route('/cat_info/<name>')
-def cat_info(name):
-    if name in cats_info.keys():
-        return cats_info[name]
-    else:
-        return 'ошибка ключа!'
+    if request.method == "GET":
+        return cats_names[id]
     
+    elif request.method == "PUT":
+        data = request.json
+        cats_names[id] = data['name']
+        return {
+            'id': id,
+            'name': cats_names[id]
+        }
+    
+    elif request.method == 'DELETE':
+        buffer_name = cats_names[id]
+        cats_names.pop(id)
+        return {
+            'id': id,
+            'name': buffer_name
+        }
 
-@app.route('/create_user')
-def create_user():
-    buffer_name = request.args.get('name')
-    buffer_sname = request.args.get('sname')
 
-    new_user = User(buffer_name, buffer_sname, len(players))
+@app.route('/cat', methods = ['POST'])
+def cat():
+    if request.method == 'POST':
+        data = request.json
+        cats_names.append(data['name'])
+        return {
+            'id': len(cats_names) - 1,
+            'name': data['name']
+        }
 
-    players.append(new_user)
-    return new_user.toJSON()
 
 
+@app.route('/pt', methods = ['POST'])
+def pt():
+    if request.method == 'POST':
+        json_data = request.json
+        if json_data:
+            for i in json_data:
+                print(json_data[i], i)
+        else:
+            print('empty body')
+    return 'ok'
 
 
 

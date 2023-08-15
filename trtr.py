@@ -5,4 +5,3 @@ ret = []
 for str_id in moi_id:
     ret.append(int(str_id))
 
-1+1
