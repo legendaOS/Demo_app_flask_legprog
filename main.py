@@ -73,19 +73,6 @@ def cat():
 
 
 
-@app.route('/pt', methods = ['POST'])
-def pt():
-    if request.method == 'POST':
-        json_data = request.json
-        if json_data:
-            for i in json_data:
-                print(json_data[i], i)
-        else:
-            print('empty body')
-    return 'ok'
-
-
-
 if __name__ == '__main__':
     # app.run(port=3000, debug=True)
     app.run(port=3000)
